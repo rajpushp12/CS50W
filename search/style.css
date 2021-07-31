@@ -1,0 +1,26 @@
+
+.align
+{
+  text-align:center;
+  padding-top: 12px;
+}
+.image
+{
+  text-align:center;
+  padding-top: 180px;
+}
+.bar
+{
+  border-radius:20px;
+  height:40px;
+}
+.abar
+{
+  
+  width:600px;
+  height:30px;
+}
+.pad
+{
+  padding: 10px;
+}

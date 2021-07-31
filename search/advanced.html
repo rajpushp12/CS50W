@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Search</title>
+
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" >
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+        <link rel="stylesheet" type="text/css" href="style.css">
+    </head>
+
+    <body>
+      
+      <div class="container">
+        <ul class="nav navbar-nav navbar-right">
+            <li><a href="index.html">Google Search</a></li>
+        </ul>
+      </div>
+
+    <div class="container-fluid">
+      <h4 style="color:red;">Advanced Search</h4>
+      <hr>
+
+      <form action="https://google.com/search">
+      <table class="form-group">
+        <tr><td><h4>Find pages with...</h4></td><td></td><td><h5>To do this in the search box.<h5></td></tr> 
+        <tr>
+          <td> All of these words: </td>
+          <td class="pad"> <input name="as_q" type="text" class="form-control abar"> </td>
+          <td>Type the important words: tri-colour rat terrier</td>
+        </tr>
+        <tr>
+          <td>This exact word or phrase: </td>
+          <td class="pad"><input name="as_epq" type="text" class="form-control abar"></td>
+          <td>Put exact words in quotes: "rat terrier"</td>
+        </tr>
+        <tr>
+          <td> Any of these words: </td>
+          <td class="pad"> <input name="as_oq" type="text" class="form-control abar"> </td>
+          <td>Type OR between all the words you want: miniature OR standard</td>
+        </tr>
+        <tr>
+          <td>None of these words: </td>
+          <td class="pad"><input name="as_eq" type="text" class="form-control abar"> </td>
+          <td>Put a minus sign just before words that you don't want:</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td style="float:right;" class="pad"><input type="submit" value="Advanced Search" class="btn btn-primary"></td>
+        </tr>
+       </table>
+       </form>
+     </div>
+    </body>
+</html>

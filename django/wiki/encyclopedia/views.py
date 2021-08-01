@@ -1,5 +1,5 @@
-from django.shortcuts import render
-from django.http import HttpResponse
+from django.shortcuts import render, redirect
+from django.http import HttpResponse,HttpResponseRedirect
 from markdown2 import Markdown
 from . import util
 
@@ -24,4 +24,18 @@ def info(request, title):
         "title":title,
         "info":html_content
     })
+
+def search(request):
+
+    key=request.POST.get('q','')
+
+    entries=util.list_entries()
+    true=key in entries
+
+    if true:
+        return redirect('info', title=key)
+    
+    #filtered_entries=
+    return render(request, 'encyclopedia/index.html')
+
 

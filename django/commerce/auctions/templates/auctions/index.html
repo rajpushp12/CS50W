@@ -1,0 +1,24 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    {% if auction_list %}
+    <h3 class="container-fluid">Here are the listings that are currently open!</h3><br>
+    {% for current_auction in auction_list %}
+    <div class="row container-fluid">
+        <div class="col-md-2">
+        <img style="height:200px" src="{{ current_auction.image_link }}">
+        </div>
+        <div>
+        <br>
+        <h3><a href="{% url 'listing' current_auction.id %}">{{ current_auction.title }}</a></h3>
+        <p>Description: {{ current_auction.description }}</p>
+        <p>Starting Bid: INR {{ current_auction.start_bid }}</p>
+        <p style="font-style:italic">Open the listing to see the bidding details</p>
+    </div>
+    </div>
+    <hr>
+    {% endfor %}
+    {% else %}
+    <h3 class="container-fluid">There are no active listings, go to create listing to create one!</h3>
+    {% endif %}
+{% endblock %}

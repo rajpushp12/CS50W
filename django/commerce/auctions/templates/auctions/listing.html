@@ -1,0 +1,58 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+	<div>
+     <h2>{{ current_listing.title }}</h2>
+
+     {% if check %}
+     <a href="{% url 'watch' current_listing.id %}"> REMOVE FROM WATCHLIST </a>
+     {% else %}
+     <a href="{% url 'watch' current_listing.id %}"> ADD TO WATCHLIST </a>
+     {% endif %}
+
+     <br>
+
+     <img style="height:350px" src="{{ current_listing.image_link }}">
+     <p>Product Details: {{ current_listing.description }} </p>
+     <h4>STARTING BID: INR {{ current_listing.start_bid }}</h4>
+     <h4>CURRENT BID: INR {{ current_price }}</h4>
+    </div>
+
+    <form action="{% url 'listing' current_listing.id %}" method="post">
+    {% csrf_token %}
+        <div class="form-group">
+            <input class="form-control " type="text" name="bid" placeholder="Bid">
+        </div>
+        <input class="btn btn-primary btn-block" type="submit" value="PLACE BID">
+    </form>
+    <p><center>{{ message }}</center></p><br>
+
+
+    <br>
+    <div>
+        {% for comment in comments %}
+        <p style="color:red; font-style:italic">{{ comment.user }} commented: {{ comment.comment }}<p>
+        {% endfor %}
+    </div>
+
+    <form action="{% url 'comment' current_listing.id %}" method="post">
+    {% csrf_token %}
+        <div class="form-group">
+            <input class="form-control " type="text" name="comment" placeholder="Comment">
+        </div>
+        <input class="btn btn-primary" type="submit" value="ADD COMMENT">
+    </form>
+
+    
+
+    <br>
+    <div>
+            <p>Listed by: {{ current_listing.product_admin }} </p>
+            <p>Category: {{ current_listing.category }}</p>
+    </div>
+
+    {% if request.user.username == current_listing.product_admin %}
+    <a class="btn btn-danger" href="{% url 'closebid' current_listing.id %}"> CLOSE BID </a>
+    {% endif %}
+
+{% endblock %}

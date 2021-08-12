@@ -1,0 +1,14 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    {% if winner_list %}
+    <h3>Here are your winnings, Congratulations!</h3>
+    {% for winner in winner_list %}
+    <div class="jumbotron">
+        <h4>{{ winner.title }}</h4>
+        <p>WINNING BID: INR {{ winner.winning_bid }}</p>
+    </div>
+    {% endfor %}
+    {% endif %}
+    <h4 class="container-fluid">{{ message }}</h4>
+{% endblock %}

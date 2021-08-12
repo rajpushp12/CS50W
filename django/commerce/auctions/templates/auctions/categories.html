@@ -1,0 +1,13 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    <h3 class="container-fluid">CATEGORIES</h3>
+
+    <ul style="font-size:30px">
+        <li><a href="{% url 'category' 'Fashion' %}">Fashion</a></li>
+        <li><a href="{% url 'category' 'Electronics' %}">Electronics</a></li>
+        <li><a href="{% url 'category' 'Phones and Tablets' %}">Phones and Tablets</a></li>
+        <li><a href="{% url 'category' 'Home accessories' %}">Home accessories</a></li>
+    </ul>
+
+{% endblock %}

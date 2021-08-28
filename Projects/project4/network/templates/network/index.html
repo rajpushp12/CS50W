@@ -1,0 +1,17 @@
+{% extends "network/layout.html" %}
+
+{% block body %}
+    {% for post in posts %}
+    <div class="card">
+        <div class="card-header">
+            <strong>{{ post.user }}</strong>
+        </div>
+        <div class="card-body">
+            <h5>{{ post.post_content }}</h5>
+            <p>Posted on {{ post.timestamp }}</p>
+            <p>{{ post.like_count }} Likes</p>
+        </div>
+    </div>
+    <br>
+    {% endfor %}
+{% endblock %}

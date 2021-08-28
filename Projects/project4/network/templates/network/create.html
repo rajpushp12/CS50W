@@ -1,0 +1,12 @@
+{% extends 'network/layout.html' %}
+
+{% block body %}
+    <h2>Create Post</h2>
+    <form action="{% url 'create' %}" method='post'>
+        {% csrf_token %}
+        <div class="form-group">
+            <textarea autofocus class="form-control" name="post_content" rows="10"></textarea>
+        </div>
+        <button class="btn btn-primary btn-block">Post</button>
+    </form>
+{% endblock %}

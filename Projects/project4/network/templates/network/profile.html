@@ -4,7 +4,7 @@
     {% for post in posts %}
     <div class="card">
         <div class="card-header">
-            <strong><a href="{% url 'profile' post.user %}">{{ post.user }}</strong></a>
+            <strong>{{ post.user }}</strong>
         </div>
         <div class="card-body">
             <h5>{{ post.post_content }}</h5>

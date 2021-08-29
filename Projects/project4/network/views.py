@@ -1,3 +1,4 @@
+import json
 from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect
@@ -80,5 +81,22 @@ def create_post(request):
         return HttpResponseRedirect(reverse('index'))
 
 
+def profile(request, username):
+    if request.method=='GET':
+        if username==request.user.username:
+            posts=Post.objects.filter(user=username)
+
+            return render(request, 'network/profile.html',{
+                "posts":posts
+            })
+
+        else:
+            posts=Post.objects.filter(user=username)
+
+            return render(request, 'network/profile.html',{
+                "posts":posts
+            })
+
+   
 
 

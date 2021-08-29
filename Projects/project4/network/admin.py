@@ -8,7 +8,10 @@ class UserAdmin(admin.ModelAdmin):
 class PostAdmin(admin.ModelAdmin):
     list_display=("id","user","post_content","like_count","timestamp")
 
+class ConnectionsAdmin(admin.ModelAdmin):
+    list_display=("id","user")
+
 
 admin.site.register(User, UserAdmin)
 admin.site.register(Post, PostAdmin)
-admin.site.register(Connections)
+admin.site.register(Connections, ConnectionsAdmin)

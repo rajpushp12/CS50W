@@ -1,6 +1,7 @@
 import json
 from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError
+from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
@@ -10,7 +11,7 @@ from .models import *
 
 def index(request):
     return render(request, "network/index.html",{
-        "posts":Post.objects.all()
+        "posts":Post.objects.all().order_by('-timestamp')
     })
 
 
@@ -83,19 +84,59 @@ def create_post(request):
 
 def profile(request, username):
     if request.method=='GET':
-        if username==request.user.username:
-            posts=Post.objects.filter(user=username)
 
+        user=User.objects.get(username=username)
+        posts=Post.objects.filter(user=username).order_by('timestamp')
+
+        try:
+            list=Connections.objects.get(user=user.id)
+
+            if username==user.username:
+                return render(request, 'network/profile.html',{
+                    "profile_user":username,
+                    "posts":posts,
+                    "follower_count":list.followers.all().count(),
+                    "following_count":list.following.all().count(),
+                    "status":True
+                })
+
+            else:
+                return render(request, 'network/profile.html',{
+                    "profile_user":username,
+                    "posts":posts,
+                    "follower_count":list.followers.all().count(),
+                    "following_count":list.following.all().count()
+                })
+
+        except Connections.DoesNotExist:
             return render(request, 'network/profile.html',{
-                "posts":posts
+                    "profile_user":username,
+                    "posts":posts,
+                    "follower_count":0,
+                    "following_count":0
+                })
+
+@login_required
+def connections(request, username):
+    if request.method=='GET':
+
+        user=User.objects.get(username=username)
+        try:
+            list=Connections.objects.get(user=user.id)
+            content_list=list.following.all()
+            l1=[]
+
+            for creator in content_list:
+                posts=Post.objects.filter(user=creator)
+                for post in posts:
+                    l1.append(post)
+
+            return render(request, "network/index.html",{
+                "posts":l1
             })
 
-        else:
-            posts=Post.objects.filter(user=username)
-
-            return render(request, 'network/profile.html',{
-                "posts":posts
-            })
+        except Connections.DoesNotExist:
+            return HttpResponse("Error code: 404")
 
    
 

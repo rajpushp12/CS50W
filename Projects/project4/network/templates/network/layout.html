@@ -27,7 +27,7 @@
                     <a class="nav-link" href="{% url 'create' %}">Create Post</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Following</a>
+                        <a class="nav-link" href="{% url 'connections' user.username %}">Following</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'logout' %}">Log Out</a>

@@ -28,6 +28,9 @@ class Connections(models.Model):
     followers=models.ManyToManyField(User, related_name='followers_list')
     following=models.ManyToManyField(User, related_name='following_list')
 
+    def __str__(self):
+        return f"{self.user}"
+
     def serialize(self):
         return{
             "id":self.id,

@@ -1,6 +1,25 @@
 {% extends "network/layout.html" %}
 
 {% block body %}
+    <table  style="text-align:center" class="table table-sm table-borderless">
+    <tr>
+    <td><h4>{{ profile_user }}</h4></td>
+    <td><h4>{{ follower_count }}</h4></td>
+    <td><h4>{{ following_count }}</h4></td>
+    </tr>
+    <tr>
+    {% if status %}
+    <td><h4></h4></td>
+    {% else %}
+    <td><button class="btn btn-secondary btn-block">Follow</button></td>
+    {% endif %}
+    <td><h4>Followers</h4></td>
+    <td><h4>Following</h4></td>
+    </tr>
+    </table>
+    <hr>
+    
+    
     {% for post in posts %}
     <div class="card">
         <div class="card-header">

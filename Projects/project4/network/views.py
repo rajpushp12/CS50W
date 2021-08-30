@@ -1,4 +1,5 @@
 import json
+from django.core.paginator import Paginator
 from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError
 from django.contrib.auth.decorators import login_required
@@ -10,8 +11,15 @@ from .models import *
 
 
 def index(request):
+
+    posts=Post.objects.all().order_by('-timestamp')
+    paginator=Paginator(posts, 10)
+
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
     return render(request, "network/index.html",{
-        "posts":Post.objects.all().order_by('-timestamp')
+        "posts":page_obj
     })
 
 
@@ -88,13 +96,19 @@ def profile(request, username):
         user=User.objects.get(username=username)
         posts=Post.objects.filter(user=username).order_by('timestamp')
 
+        paginator=Paginator(posts, 10)
+
+        page_number = request.GET.get('page')
+        page_obj = paginator.get_page(page_number)
+
+
         try:
             list=Connections.objects.get(user=user.id)
 
             if username==user.username:
                 return render(request, 'network/profile.html',{
                     "profile_user":username,
-                    "posts":posts,
+                    "posts":page_obj,
                     "follower_count":list.followers.all().count(),
                     "following_count":list.following.all().count(),
                     "status":True
@@ -103,7 +117,7 @@ def profile(request, username):
             else:
                 return render(request, 'network/profile.html',{
                     "profile_user":username,
-                    "posts":posts,
+                    "posts":page_obj,
                     "follower_count":list.followers.all().count(),
                     "following_count":list.following.all().count()
                 })
@@ -111,7 +125,7 @@ def profile(request, username):
         except Connections.DoesNotExist:
             return render(request, 'network/profile.html',{
                     "profile_user":username,
-                    "posts":posts,
+                    "posts":page_obj,
                     "follower_count":0,
                     "following_count":0
                 })
@@ -131,13 +145,16 @@ def connections(request, username):
                 for post in posts:
                     l1.append(post)
 
+            paginator=Paginator(l1, 10)
+
+            page_number = request.GET.get('page')
+            page_obj = paginator.get_page(page_number)
+
             return render(request, "network/index.html",{
-                "posts":l1
+                "posts":page_obj
             })
 
         except Connections.DoesNotExist:
             return HttpResponse("Error code: 404")
-
-   
 
 

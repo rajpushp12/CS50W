@@ -6,6 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
+from django.views.decorators.csrf import csrf_exempt
 
 from .models import *
 
@@ -65,6 +66,11 @@ def register(request):
         try:
             user = User.objects.create_user(username, email, password)
             user.save()
+
+            connection=Connections()
+            connection.user=user
+            connection.save()
+
         except IntegrityError:
             return render(request, "network/register.html", {
                 "message": "Username already taken."
@@ -90,6 +96,8 @@ def create_post(request):
         return HttpResponseRedirect(reverse('index'))
 
 
+
+
 def profile(request, username):
     if request.method=='GET':
 
@@ -101,34 +109,17 @@ def profile(request, username):
         page_number = request.GET.get('page')
         page_obj = paginator.get_page(page_number)
 
+        list=Connections.objects.get(user=user.id)
 
-        try:
-            list=Connections.objects.get(user=user.id)
+        return render(request, 'network/profile.html',{
+                "profile_user":username,
+                "posts":page_obj,
+                "follower_count":list.followers.count(),
+                "following_count":list.following.count(),
+            })
 
-            if username==user.username:
-                return render(request, 'network/profile.html',{
-                    "profile_user":username,
-                    "posts":page_obj,
-                    "follower_count":list.followers.all().count(),
-                    "following_count":list.following.all().count(),
-                    "status":True
-                })
 
-            else:
-                return render(request, 'network/profile.html',{
-                    "profile_user":username,
-                    "posts":page_obj,
-                    "follower_count":list.followers.all().count(),
-                    "following_count":list.following.all().count()
-                })
 
-        except Connections.DoesNotExist:
-            return render(request, 'network/profile.html',{
-                    "profile_user":username,
-                    "posts":page_obj,
-                    "follower_count":0,
-                    "following_count":0
-                })
 
 @login_required
 def connections(request, username):

@@ -24,9 +24,9 @@ class Post(models.Model):
 
 
 class Connections(models.Model):
-    user=models.ForeignKey(User, on_delete=models.CASCADE, default=None, related_name='creator')
-    followers=models.ManyToManyField(User, related_name='followers_list')
-    following=models.ManyToManyField(User, related_name='following_list')
+    user=models.ForeignKey(User, on_delete=models.CASCADE, related_name='creator')
+    followers=models.ManyToManyField(User, related_name='followers_list', default=None)
+    following=models.ManyToManyField(User, related_name='following_list', default=None)
 
     def __str__(self):
         return f"{self.user}"

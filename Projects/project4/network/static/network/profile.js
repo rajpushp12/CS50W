@@ -1,3 +1,0 @@
-document.querySelector('DOMContentLoaded', function(){
-    
-});

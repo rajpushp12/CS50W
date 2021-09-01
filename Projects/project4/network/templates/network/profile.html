@@ -60,6 +60,16 @@
         </ul>
     </nav>
     </div>
+    <div id="edit-view">
+        <h2>Edit Post</h2>
+        <form id="edit-form" action="{% url 'create' %}" method='post'>
+            {% csrf_token %}
+            <div class="form-group">
+                <textarea id="edit-body" class="form-control" name="post_content" rows="10"></textarea>
+            </div>
+            <button class="btn btn-primary btn-block">Update Post</button>
+        </form>
+    </div>
 {% endblock %}
 
 {% block script %}

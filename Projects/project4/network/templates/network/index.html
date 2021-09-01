@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block body %}
-    <div id="index-view">
+<div id="index-view">
     {% for post in posts %}
     <div class="card">
         <div class="card-header">
@@ -13,7 +13,7 @@
             <p>{{ post.timestamp }}</p>
             <p>{{ post.like_count }} Likes</p>
             {% if post.user == request.user.username %}
-            <button id="edit-btn" class="btn btn-primary btn-sm">Edit Post</button>
+            <button id="edit-btn" class="btn btn-primary btn-sm" value="{{ post.id }}">Edit Post</button>
             {% endif %}
         </div>
     </div>
@@ -38,7 +38,18 @@
         {% endif %}
         </ul>
     </nav>
-    </div>
+</div>
+
+<div id="edit-view">
+    <h2>Edit Post</h2>
+    <form id="edit-form" action="{% url 'create' %}" method='post'>
+        {% csrf_token %}
+        <div class="form-group">
+            <textarea id="edit-body" class="form-control" name="post_content" rows="10"></textarea>
+        </div>
+        <button class="btn btn-primary btn-block">Update Post</button>
+    </form>
+</div>
 {% endblock %}
 
 {% block script %}

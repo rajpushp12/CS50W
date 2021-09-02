@@ -12,5 +12,6 @@ urlpatterns = [
     path("<str:username>/connections", views.connections, name="connections"),
 
     #API Routes
-    path("post/<int:id>", views.post, name="post")
+    path("post/<int:id>", views.post, name="post"),
+    path("like/<int:id>", views.like, name="like")
 ]

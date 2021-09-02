@@ -165,15 +165,39 @@ def connections(request, username):
             return HttpResponse("Error code: 404")
 
 
-
+@csrf_exempt
 def post(request,id):
 
-    # Query for requested email
+    #Query for requested email
     try:
-        post_info = Post.objects.get(pk=id)
+        post = Post.objects.get(pk=id)
     except Post.DoesNotExist:
         return JsonResponse({"error": "Email not found."}, status=404)
 
+    if request.method=='GET':
+        return JsonResponse(post.serialize())
+
+    if request.method == 'PUT':
+        data = json.loads(request.body)
+
+        post.post_content=data["post_content"]
+        post.save()
+
+
+@csrf_exempt
+def like(request,id):
+
+    #Query for requested email
+    try:
+        post = Post.objects.get(pk=id)
+    except Post.DoesNotExist:
+        return JsonResponse({"error": "Email not found."}, status=404)
 
     if request.method=='GET':
-        return JsonResponse(post_info.serialize())
+        return JsonResponse(post.serialize())
+
+    if request.method == 'PUT':
+        data = json.loads(request.body)
+
+        post.like_count=data["like_count"]
+        post.save()

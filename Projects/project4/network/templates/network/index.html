@@ -2,6 +2,10 @@
 {% load static %}
 
 {% block body %}
+
+
+
+
 <div id="index-view">
     {% for post in posts %}
     <div class="card">
@@ -11,9 +15,10 @@
         <div class="card-body">
             <h5>{{ post.post_content }}</h5>
             <p>{{ post.timestamp }}</p>
-            <p>{{ post.like_count }} Likes</p>
+            <p>{{ post.like_count }} Likes </p>
+            <button id="like-btn" class="btn btn-primary btn-sm" value="{{ post.id }}">Like</button>
             {% if post.user == request.user.username %}
-            <button id="edit-btn" class="btn btn-primary btn-sm" value="{{ post.id }}">Edit Post</button>
+            <button id="edit-btn" class="btn btn-danger btn-sm" value="{{ post.id }}">Edit Post</button>
             {% endif %}
         </div>
     </div>
@@ -40,17 +45,25 @@
     </nav>
 </div>
 
+
+
 <div id="edit-view">
     <h2>Edit Post</h2>
-    <form id="edit-form" action="{% url 'create' %}" method='post'>
-        {% csrf_token %}
+    <form id="edit-form">
         <div class="form-group">
             <textarea id="edit-body" class="form-control" name="post_content" rows="10"></textarea>
         </div>
         <button class="btn btn-primary btn-block">Update Post</button>
     </form>
 </div>
+
+
+
+
 {% endblock %}
+
+
+
 
 {% block script %}
     <script src="{% static 'network/edit.js' %}"></script>

@@ -34,6 +34,8 @@ class Connections(models.Model):
     def serialize(self):
         return{
             "id":self.id,
-            "followers":self.followers,
-            "floolwing":self.following
+            "user":self.user.username,
+            "followers":[user.username for user in self.followers.all()],
+            "following":[user.username for user in self.following.all()],
+            "followers_count":self.followers.count(),
         }

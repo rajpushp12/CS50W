@@ -24,6 +24,7 @@ def index(request):
     })
 
 
+
 def login_view(request):
     if request.method == "POST":
 
@@ -42,6 +43,7 @@ def login_view(request):
             })
     else:
         return render(request, "network/login.html")
+
 
 
 def logout_view(request):
@@ -109,30 +111,57 @@ def profile(request, username):
     page_obj = paginator.get_page(page_number)
 
     list=Connections.objects.get(user=user.id)
+
+    return render(request, 'network/profile.html',{
+            "name":username,
+            "posts":page_obj,
+            "follower_count":list.followers.count(),
+            "following_count":list.following.count()
+        })
+
+
+@login_required
+@csrf_exempt
+def connect_fetch(request, username):
+
+    user=User.objects.get(username=username)
+    list=Connections.objects.get(user=user.id)
+        
+    return JsonResponse(list.serialize())
+
+
+
+@login_required
+@csrf_exempt
+def connect_add(request, username):
+
+    user=User.objects.get(username=username)
+    
+    list=Connections.objects.get(user=user.id)
+    list1=Connections.objects.get(user=request.user.id)
+        
+    
+    if request.method=='PUT':
+
+        list.followers.add(request.user)
+        list1.following.add(user)
+
+
+@login_required
+@csrf_exempt
+def connect_remove(request, username):
+
+    user=User.objects.get(username=username)
+    
+    list=Connections.objects.get(user=user.id)
     list1=Connections.objects.get(user=request.user.id)
 
-    if request.method=='GET':
+    if request.method=='PUT':
 
-        return render(request, 'network/profile.html',{
-                "profile_user":username,
-                "posts":page_obj,
-                "follower_count":list.followers.count(),
-                "following_count":list.following.count(),
-            })
+        list.followers.remove(request.user)
+        list1.following.remove(user)
 
-    if request.method == 'POST':
 
-        if not list.followers.filter(followers_list__id=request.user.id):
-
-            list.followers.add(request.user)
-            list1.following.add(user)
-            return HttpResponse("added")
-
-        else:
-
-            list.followers.remove(request.user)
-            list1.following.remove(user)
-            return HttpResponse("removed")
 
 
 
@@ -165,6 +194,7 @@ def connections(request, username):
             return HttpResponse("Error code: 404")
 
 
+
 @csrf_exempt
 def post(request,id):
 
@@ -182,6 +212,7 @@ def post(request,id):
 
         post.post_content=data["post_content"]
         post.save()
+
 
 
 @csrf_exempt

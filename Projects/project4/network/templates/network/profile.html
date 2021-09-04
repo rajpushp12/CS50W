@@ -2,22 +2,25 @@
 {% load static %}
 
 {% block body %}
-    <table  style="text-align:center" class="table table-sm table-borderless">
-    <tr>
-    <td><h4>{{ profile_user }}</h4></td>
-    <td><h4>{{ follower_count }}</h4></td>
-    <td><h4>{{ following_count }}</h4></td>
-    </tr>
-    <tr>
-    <form action= "{% url 'profile' profile_user %}" method="post">
-    {% csrf_token %}
-    <td><button class="btn btn-secondary btn-block">Follow</button></td>
-    </form>
-    <td><h4>Followers</h4></td>
-    <td><h4>Following</h4></td>
-    </tr>
-    </table>
-    <hr>
+    <h5>{{ name }}</h5>
+    <div class="row">
+
+    <div class="col-sm-4">
+    {% if name == request.user.username %}
+    {% else %}
+    <button id="follow-btn" class="btn btn-danger btn-sm" value="{{name}}">Follow</button>
+    <button id="unfollow-btn" class="btn btn-danger btn-sm" value="{{name}}">Unfollow</button>
+    {% endif %}
+    </div>
+    <div class="col-sm-4">
+    <h5 id="count">{{ follower_count }} Followers</h5>
+    </div>
+    <div class="col-sm-4">
+    <h5>{{ following_count }} Following</h5>
+    </div>
+    
+    </div><hr>
+    
     
     <div id="index-view">
     {% for post in posts %}
@@ -26,11 +29,12 @@
             <strong>{{ post.user }}</strong>
         </div>
         <div class="card-body">
-            <h5>{{ post.post_content }}</h5>
+            <h5 id="post{{post.id}}">{{ post.post_content }}</h5>
             <p>{{ post.timestamp }}</p>
-            <p>{{ post.like_count }} Likes</p>
+            <p id="count{{post.id}}">{{ post.like_count }} Likes </p>
+            <button id="like-btn" class="btn btn-primary btn-sm" value="{{ post.id }}">Like</button>
             {% if post.user == request.user.username %}
-            <button id="edit-btn" class="btn btn-primary btn-sm">Edit Post</button>
+            <button id="edit-btn" class="btn btn-danger btn-sm" value="{{ post.id }}">Edit Post</button>
             {% endif %}
         </div>
     </div>
@@ -60,10 +64,10 @@
         </ul>
     </nav>
     </div>
+
     <div id="edit-view">
         <h2>Edit Post</h2>
-        <form id="edit-form" action="{% url 'create' %}" method='post'>
-            {% csrf_token %}
+        <form id="edit-form">
             <div class="form-group">
                 <textarea id="edit-body" class="form-control" name="post_content" rows="10"></textarea>
             </div>
@@ -74,4 +78,5 @@
 
 {% block script %}
     <script src="{% static 'network/edit.js' %}"></script>
+    <script src="{% static 'network/connect.js' %}"></script>
 {% endblock %}

@@ -1,11 +1,8 @@
 {% extends "network/layout.html" %}
 {% load static %}
 
+
 {% block body %}
-
-
-
-
 <div id="index-view">
     {% for post in posts %}
     <div class="card">
@@ -13,9 +10,9 @@
             <p><strong><a href="{% url 'profile' post.user %}">{{ post.user }}</a></strong></p>
         </div>
         <div class="card-body">
-            <h5>{{ post.post_content }}</h5>
+            <h5 id="body{{post.id}}">{{ post.post_content }}</h5>
             <p>{{ post.timestamp }}</p>
-            <p>{{ post.like_count }} Likes </p>
+            <p id="count{{post.id}}">{{ post.like_count }} Likes </p>
             <button id="like-btn" class="btn btn-primary btn-sm" value="{{ post.id }}">Like</button>
             {% if post.user == request.user.username %}
             <button id="edit-btn" class="btn btn-danger btn-sm" value="{{ post.id }}">Edit Post</button>
@@ -24,6 +21,9 @@
     </div>
     <br>
     {% endfor %}
+
+
+
     <nav aria-label="Page navigation example">
         <ul class="pagination">
         {% if posts.has_previous %}
@@ -56,10 +56,6 @@
         <button class="btn btn-primary btn-block">Update Post</button>
     </form>
 </div>
-
-
-
-
 {% endblock %}
 
 

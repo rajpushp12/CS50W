@@ -21,15 +21,15 @@
                         <a class="nav-link" href="{% url 'profile' user.username %}"><strong>{{ user.username }}</strong></a>
                     </li>
                 {% endif %}
-                <li class="nav-item">
-                  <a class="nav-link" href="{% url 'index' %}">Feed</a>
-                </li>
+                    <li class="nav-item">
+                    <a class="nav-link" href="{% url 'index' %}">Feed</a>
+                    </li>
                 {% if user.is_authenticated %}
                     <li class="nav-item">
-                    <a class="nav-link" href="{% url 'create' %}">Create Post</a>
+                    <a class="nav-link" href="{% url 'connections' user.username %}">Following</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'connections' user.username %}">Following</a>
+                    <a class="nav-link" href="{% url 'create' %}">Create Post</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'logout' %}">Log Out</a>

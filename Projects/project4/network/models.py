@@ -37,5 +37,5 @@ class Connections(models.Model):
             "user":self.user.username,
             "followers":[user.username for user in self.followers.all()],
             "following":[user.username for user in self.following.all()],
-            "followers_count":self.followers.count(),
+            "followers_count":self.followers.count()
         }

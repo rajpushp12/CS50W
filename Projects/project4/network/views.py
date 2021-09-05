@@ -102,22 +102,26 @@ def create_post(request):
 
 def profile(request, username):
 
-    user=User.objects.get(username=username)
-    posts=Post.objects.filter(user=username).order_by('-timestamp')
+    if request.user.is_authenticated:
+        user=User.objects.get(username=username)
+        posts=Post.objects.filter(user=username).order_by('-timestamp')
 
-    paginator=Paginator(posts, 10)
+        paginator=Paginator(posts, 10)
 
-    page_number = request.GET.get('page')
-    page_obj = paginator.get_page(page_number)
+        page_number = request.GET.get('page')
+        page_obj = paginator.get_page(page_number)
 
-    list=Connections.objects.get(user=user.id)
+        list=Connections.objects.get(user=user.id)
 
-    return render(request, 'network/profile.html',{
-            "name":username,
-            "posts":page_obj,
-            "follower_count":list.followers.count(),
-            "following_count":list.following.count()
-        })
+        return render(request, 'network/profile.html',{
+                "name":username,
+                "posts":page_obj,
+                "follower_count":list.followers.count(),
+                "following_count":list.following.count()
+            })
+
+    else:
+        return HttpResponseRedirect(reverse('login'))
 
 
 @login_required
@@ -192,7 +196,6 @@ def connections(request, username):
 
         except Connections.DoesNotExist:
             return HttpResponse("Error code: 404")
-
 
 
 @csrf_exempt
